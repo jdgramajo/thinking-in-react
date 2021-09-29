@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 const SearchBar = (props) => {
   const handleFilterTextChange = (e) => {
@@ -10,27 +10,27 @@ const SearchBar = (props) => {
   };
 
   return (
-    <form class="col-6">
-      <div class="form-floating">
+    <form className="col-6">
+      <div className="form-floating">
         <input
           type="text"
-          class="form-control"
+          className="form-control"
           id="search-input"
           placeholder="Search..."
           value={props.filterText}
           onChange={handleFilterTextChange}
         />
-        <label for="search-input">Search...</label>
+        <label htmlFor="search-input">Search...</label>
       </div>
-      <div class="form-check">
+      <div className="form-check">
         <input
           type="checkbox"
-          class="form-check-input"
+          className="form-check-input"
           id="stocked-only-check"
           checked={props.inStockOnly}
           onChange={handleInStockChange}
         />
-        <label class="form-check-label" for="sotcked-only-check">
+        <label className="form-check-label" htmlFor="sotcked-only-check">
           Only show products in stock
         </label>
       </div>
@@ -44,15 +44,15 @@ const CategoryTable = (props) => {
     const name = product.stocked ? (
       <td>{product.name}</td>
     ) : (
-      <td class="text-danger bg-warning">{product.name}</td>
+      <td className="text-danger bg-warning">{product.name}</td>
     );
     const price = product.stocked ? (
       <td>{product.price}</td>
     ) : (
-      <td class="text-danger bg-warning">{product.price}</td>
+      <td className="text-danger bg-warning">{product.price}</td>
     );
     productRows.push(
-      <tr class="fs-6">
+      <tr className="fs-6">
         {name}
         {price}
       </tr>
@@ -62,7 +62,7 @@ const CategoryTable = (props) => {
   return (
     <>
       <tr>
-        <th class="fs-5" colSpan="2">
+        <th className="fs-5" colSpan="2">
           {props.category.name}
         </th>
       </tr>
@@ -72,15 +72,15 @@ const CategoryTable = (props) => {
 };
 
 const FilterableProductTable = (props) => {
-  const [filterText, setFilterText] = useState("");
-  const [inStockOnly, setInStockOnly] = useState(false);
+  const { filterText, inStockOnly } = useSelector((store) => store);
+  const dispatch = useDispatch();
 
-  const handleFilterTextChange = (filterText) => {
-    setFilterText(filterText);
+  const handleFilterTextChange = (value) => {
+    dispatch({ type: "FILTER_TEXT_CHANGE", value });
   };
 
-  const handleInStockChange = (inStockOnly) => {
-    setInStockOnly(inStockOnly);
+  const handleInStockChange = () => {
+    dispatch({ type: "TOGGLE_IN_STOCK_ONLY" });
   };
 
   const applyFilters = (categories) => {
@@ -110,12 +110,12 @@ const FilterableProductTable = (props) => {
         onFilterTextChange={handleFilterTextChange}
         onInStockChange={handleInStockChange}
       />
-      <div class="col-6">
-        <table class="table">
+      <div className="col-6">
+        <table className="table">
           <thead>
             <tr>
-              <th class="fs-4">Name</th>
-              <th class="fs-4">Price</th>
+              <th className="fs-4">Name</th>
+              <th className="fs-4">Price</th>
             </tr>
           </thead>
           <tbody>{rows}</tbody>

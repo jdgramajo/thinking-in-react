@@ -21,12 +21,12 @@ const DATA = {
   ],
 };
 
-function App() {
+const App = () => {
   return (
     <div className="container mt-5">
       <FilterableProductTable data={DATA} />
     </div>
   );
-}
+};
 
 export default App;
