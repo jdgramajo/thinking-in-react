@@ -1,5 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 
+import { toggleInStockOnly, changeFilterText } from "../store";
+
 const SearchBar = (props) => {
   const handleFilterTextChange = (e) => {
     props.onFilterTextChange(e.target.value);
@@ -76,11 +78,11 @@ const FilterableProductTable = (props) => {
   const dispatch = useDispatch();
 
   const handleFilterTextChange = (value) => {
-    dispatch({ type: "FILTER_TEXT_CHANGE", value });
+    dispatch(changeFilterText(value));
   };
 
   const handleInStockChange = () => {
-    dispatch({ type: "TOGGLE_IN_STOCK_ONLY" });
+    dispatch(toggleInStockOnly());
   };
 
   const applyFilters = (categories) => {

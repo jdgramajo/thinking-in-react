@@ -1,28 +1,39 @@
-import { createStore, combineReducers } from "redux";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-const inStockOnly = (state = false, action) => {
-  switch (action.type) {
-    case "TOGGLE_IN_STOCK_ONLY":
-      return !state;
-    default:
-      return state;
-  }
-};
+// Redux Toolkit reducer definitions
+// Each could go in their own file and export the actions,
+// as the documentation suggests.
 
-const filterText = (state = "", action) => {
-  switch (action.type) {
-    case "FILTER_TEXT_CHANGE":
-      return action.value;
-    default:
-      return state;
-  }
-};
-
-const reducers = combineReducers({
-  inStockOnly,
-  filterText,
+const inStockOnlySlice = createSlice({
+  name: "inStockOnly",
+  initialState: false,
+  reducers: {
+    toggleInStockOnly: (state) => !state,
+  },
 });
 
-const store = createStore(reducers, {});
+const { toggleInStockOnly } = inStockOnlySlice.actions;
+
+const filterTextSlice = createSlice({
+  name: "filterText",
+  initialState: "",
+  reducers: {
+    changeFilterText: (state, action) => action.payload,
+  },
+});
+
+const { changeFilterText } = filterTextSlice.actions;
+
+export { toggleInStockOnly, changeFilterText };
+
+// Global store configuration for Redux Toolkit.
+// Could be in its own module.s
+
+const store = configureStore({
+  reducer: {
+    [inStockOnlySlice.name]: inStockOnlySlice.reducer,
+    [filterTextSlice.name]: filterTextSlice.reducer,
+  },
+});
 
 export default store;
